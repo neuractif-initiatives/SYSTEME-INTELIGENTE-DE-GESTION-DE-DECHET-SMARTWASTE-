@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartWaste - Gestion Intelligente des Déchets</title>
+
+  <!-- Tailwind (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+  <!-- Chart.js (optionnel) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <!-- Styles personnalisés -->
+  <link rel="stylesheet" href="styles.css"/>
+
+</head>
+<body class="bg-gray-50">
+
+  <!-- NAVIGATION -->
+  <nav class="nav-container">
+    <div class="nav-content">
+      <div class="nav-brand">
+        <!-- Icon (SVG) -->
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+             fill="currentColor" class="nav-icon">
+          <path fill-rule="evenodd"
+                d="M9 3.75A1.75 1.75 0 0110.75 2h2.5A1.75 1.75 0 0115 3.75V4h4.25a.75.75 0 010 1.5h-.3l-1.2 13.36A3.25 3.25 0 0114.52 22h-5.04a3.25 3.25 0 01-3.23-3.14L5.05 5.5h-.3a.75.75 0 010-1.5H9v-.75zm1.75-.25a.25.25 0 00-.25.25V4h4v-.25a.25.25 0 00-.25-.25h-2.5zM6.57 5.5l1.17 13.1a1.75 1.75 0 001.74 1.65h5.04a1.75 1.75 0 001.74-1.65L17.43 5.5H6.57z"
+                clip-rule="evenodd" />
+        </svg>
+        <h1 class="nav-title">Système de Gestion Intelligente des Déchets</h1>
+        <h1 class="nav-title2">(SmartWaste)</h1>
+      </div>
+
+      <div class="nav-buttons">
+        <button id="viewCollector" class="btn-collector-view">Services Ramassage</button>
+        <button id="viewUser" class="btn-user-view">Mon Foyer</button>
+        <button id="viewAdmin" class="btn-admin-view">Administration</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- VUES PRINCIPALES -->
+  <main class="main-container">
+    <!-- Vue Services de Ramassage -->
+    <section id="collectorView" class="view-container">
+      <h2 class="view-title">Tableau de Bord - Services de Ramassage</h2>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 class="stat-label">Poubelles Pleines</h3>
+          <p id="fullBins" class="stat-value stat-value-full">0</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-label">Taux Moyen</h3>
+          <p id="averageFill" class="stat-value stat-value-average">0%</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-label">Collectes Urgentes</h3>
+          <p id="urgentCollections" class="stat-value stat-value-urgent">0</p>
+        </div>
+        <div class="stat-card">
+          <h3 class="stat-label">Total Poubelles</h3>
+          <p id="totalBins" class="stat-value stat-value-total">0</p>
+        </div>
+      </div>
+
+      <div class="content-grid">
+        <div class="content-card">
+          <h3 class="content-title">Carte des Poubelles</h3>
+          <div id="map" class="map-container"></div>
+        </div>
+
+        <div class="content-card">
+          <h3 class="content-title">Collectes Urgentes</h3>
+          <div id="urgentList" class="urgent-list"></div>
+        </div>
+      </div>
+
+      <div class="action-section">
+        <button id="exportReport" class="btn-export">
+          <i class="fa-solid fa-file-export mr-2"></i> Générer Rapport
+        </button>
+      </div>
+    </section>
+
+    <!-- Vue Foyer -->
+    <section id="userView" class="view-container hidden">
+      <h2 class="view-title">Mon Foyer - Poubelle #BIN001</h2>
+
+      <div class="user-grid">
+        <div class="user-bin-card">
+          <div id="userBinLevel" class="bin-level-display">45%</div>
+          <div class="progress-bar-container">
+            <div id="userBinBar" class="progress-bar-fill" style="width:45%"></div>
+          </div>
+          <p id="userBinStatus" class="bin-status">Niveau normal</p>
+          <p class="collection-info">Prochaine collecte estimée: <span id="nextCollection">Demain 8h</span></p>
+        </div>
+
+        <div class="user-history-card">
+          <h3 class="content-title">Historique des Collectes</h3>
+          <div class="history-list">
+            <div class="history-item">
+              <span>26 Nov 2024</span>
+              <span class="status-collected">✓ Collectée</span>
+            </div>
+            <div class="history-item">
+              <span>23 Nov 2024</span>
+              <span class="status-collected">✓ Collectée</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="notifications-card">
+        <h3 class="content-title">Notifications</h3>
+        <div id="userNotifications" class="notifications-list"></div>
+      </div>
+    </section>
+
+    <!-- Vue Administration -->
+    <section id="adminView" class="view-container hidden">
+      <h2 class="view-title">Panel d'Administration</h2>
+
+      <div class="admin-grid">
+        <div class="admin-main-card">
+          <div class="admin-action-bar">
+            <button id="addBin" class="btn-add-bin">+ Ajouter Poubelle</button>
+          </div>
+
+          <div class="table-container">
+            <table class="admin-table">
+              <thead class="table-header">
+                <tr>
+                  <th class="table-cell">ID</th>
+                  <th class="table-cell">Adresse</th>
+                  <th class="table-cell">Niveau</th>
+                  <th class="table-cell">Statut</th>
+                  <th class="table-cell">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminBinsList"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-sidebar">
+          <h3 class="content-title">Configuration</h3>
+          <div class="config-section">
+            <div class="config-input-group">
+              <label class="config-label">Seuil Orange (%)</label>
+              <input id="orangeThreshold" type="number" value="70" class="config-input">
+            </div>
+            <div class="config-input-group">
+              <label class="config-label">Seuil Rouge (%)</label>
+              <input id="redThreshold" type="number" value="90" class="config-input">
+            </div>
+            <button id="saveConfig" class="btn-save-config">Sauvegarder</button>
+          </div>
+
+          <div class="logs-section">
+            <h4 class="logs-title">Logs d'Activité</h4>
+            <div id="activityLogs" class="logs-container"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Notifications -->
+  <div id="notifications" class="notifications-container"></div>
+
+  <!-- Modal de Simulation -->
+  <div id="simulationModal" class="modal-overlay hidden">
+    <div class="modal-container">
+      <div class="modal-content">
+        <h3 class="modal-title">Simuler Changement de Niveau</h3>
+        <div class="modal-input-group">
+          <label class="modal-label">Poubelle ID</label>
+          <select id="modalBinId" class="modal-select"></select>
+        </div>
+        <div class="modal-input-group">
+          <label class="modal-label">Nouveau Niveau (%)</label>
+          <input id="modalNewLevel" type="range" min="0" max="100" value="50" class="modal-slider">
+          <div class="slider-display">
+            <span id="modalLevelDisplay" class="slider-value">50%</span>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button id="applySimulation" class="btn-modal-apply">Appliquer</button>
+          <button id="cancelSimulation" class="btn-modal-cancel">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
