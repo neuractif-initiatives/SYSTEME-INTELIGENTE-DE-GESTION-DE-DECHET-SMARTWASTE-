@@ -9,11 +9,11 @@ let thresholds = { orange: 70, red: 90 };
 
 // Données de démonstration des poubelles
 let bins = [
-  { id: 'BIN001', address: '123 Rue de la Paix', lat: 48.8566, lng: 2.3522, level: 45, lastCollection: '2024-11-26' },
-  { id: 'BIN002', address: '456 Avenue des Champs', lat: 48.8606, lng: 2.3376, level: 78, lastCollection: '2024-11-25' },
-  { id: 'BIN003', address: '789 Boulevard Saint-Germain', lat: 48.8546, lng: 2.3250, level: 92, lastCollection: '2024-11-24' },
-  { id: 'BIN004', address: '321 Rue de Rivoli', lat: 48.8575, lng: 2.3294, level: 35, lastCollection: '2024-11-27' },
-  { id: 'BIN005', address: '654 Avenue de la République', lat: 48.8631, lng: 2.3444, level: 85, lastCollection: '2024-11-24' }
+  { id: 'BIN001', address: '424 Boulevard de la Paix', lat: 48.8566, lng: 2.3522, level: 45, lastCollection: '2025-11-26' },
+  { id: 'BIN002', address: '201 Avenue de la présidence', lat: 48.8606, lng: 2.3376, level: 78, lastCollection: '2025-11-25' },
+  { id: 'BIN003', address: '325 Boulevard Eyadéma', lat: 48.8546, lng: 2.3250, level: 92, lastCollection: '2025-11-24' },
+  { id: 'BIN004', address: '745 Rue de la Gare', lat: 48.8575, lng: 2.3294, level: 35, lastCollection: '2025-11-27' },
+  { id: 'BIN005', address: '001 Rue du commerce', lat: 48.8631, lng: 2.3444, level: 85, lastCollection: '2025-11-24' }
 ];
 
 // Logs d'activité
@@ -397,11 +397,15 @@ function exportReport() {
 function addRandomBin() {
   const newId = `BIN${String(bins.length + 1).padStart(3, '0')}`;
   const addresses = [
-    '123 Rue de la Démonstration',
-    '456 Avenue du Test', 
-    '789 Boulevard de l\'Exemple',
-    '321 Rue de la Simulation',
-    '654 Avenue de la Technologie'
+    'Rue de l\'artisanat (ex-rue du Commerce',
+    'Rue des Evala 151 AFG', 
+    'Avenue de la Libération',
+    'Rue Klala 264 BKK',
+    'Boulevard de la paix',
+    'Avenue Papale',
+    'Boulevard du 13 Janvier',
+    'Avenue de la chance',
+    'Boulevard Eyadéma'
   ];
   
   const newBin = {
