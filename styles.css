@@ -13,9 +13,10 @@ body {
 
 /* Navigation */
 .nav-container {
-  background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #f9f9f9 0%, #d1cccc 100%);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   border-bottom: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
 }
 
 .nav-content {
@@ -36,22 +37,17 @@ body {
 .nav-icon {
   width: 2rem;
   height: 2rem;
-  color: white;
+  color: rgb(9, 172, 50);
 }
 
 .nav-title {
   font-size: 1.25rem;
-  font-weight: bold;
-  color: white;
+  font-weight: 500;
+  color: rgb(9, 172, 50);
+  margin-right: 0%;
   margin: 0;
 }
 
-.nav-title2 {
-  font-size: 1rem;
-  font-weight: bold;
-  color: #b5f59f;
-  margin: 0;
-}
 
 .nav-buttons {
   display: flex;
@@ -65,19 +61,19 @@ body {
 .btn-logout {
   padding: 0.5rem 0.5rem;
   border-radius: 0.5rem;
-  font-weight: 500;
+  font-weight: 400;
   transition: all 0.2s;
   border: none;
   cursor: pointer;
 }
 
 .btn-collector-view {
-  background-color: #487eb1;
+  background-color: #2b74d3;
   color: white;
 }
 
 .btn-collector-view:hover {
-  background-color: #5a8cf7;
+  background-color: #0e58b9;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   border-color: #b91c1c;
@@ -89,22 +85,33 @@ body {
 }
 
 .btn-user-view:hover {
-  background-color: #059669;
+  background-color: #04885e;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   border-color: #b91c1c;
 }
 
 .btn-admin-view {
-  background-color: #8b5cf6;
+  background-color: #e4741d;
   color: white;
 }
 
 .btn-admin-view:hover {
-  background-color: #7c3aed;
+  background-color: #de6c14;
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   border-color: #b91c1c;
+}
+
+/*Pour les icônes des buttons*/
+.btn-collector-view {
+  font-size: 0.9rem;
+}
+.btn-user-view {
+  font-size: 0.9rem;
+}
+.btn-admin-view {
+  font-size: 0.9rem;
 }
 
 /* Bouton de déconnexion - Positionné à droite avec icône */
@@ -186,6 +193,8 @@ body {
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .stat-card {
@@ -195,6 +204,7 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
   text-align: center;
+  
 }
 
 .stat-label {
@@ -415,7 +425,7 @@ body {
 }
 
 .btn-export {
-  background-color: #3b82f6;
+  background-color: #3e88ff;
   color: white;
 }
 
@@ -424,14 +434,14 @@ body {
 }
 
 .btn-save-config {
-  background-color: #8b5cf6;
+  background-color: #10b981;
   color: white;
   width: 100%;
   margin-top: 1rem;
 }
 
 .btn-save-config:hover {
-  background-color: #7c3aed;
+  background-color: #0f723d;
 }
 
 /* Tableau */
@@ -729,3 +739,70 @@ body {
 .modal-backdrop {
     z-index: 2000 !important;
 }
+
+/*Graphe d'analyse*/
+.hidden { display:none; }
+
+.btn-custom-analyse {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0.5rem 0.5rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+    color: whitesmoke;
+    margin-top: 12px;
+}
+
+.btn-custom-analyse:hover {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+/* Ajouter ces styles CSS */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(10px); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-fade-out {
+    animation: fadeOut 0.3s ease-out forwards;
+}
+
+/* Styles pour les cartes de graphiques */
+.bin-marker {
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.progress-bar-fill {
+    transition: width 0.5s ease-out, background-color 0.3s ease;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .grid-cols-1 {
+        grid-template-columns: 1fr;
+    }
+    
+    .md\:grid-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .lg\:grid-cols-2 {
+        grid-template-columns: 1fr;
+    }
+}
+/*Code précedent */

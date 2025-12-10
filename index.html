@@ -11,6 +11,8 @@
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
 
   <!-- Chart.js (optionnel) -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -20,6 +22,10 @@
 
   <!-- Styles personnalisés -->
   <link rel="stylesheet" href="styles.css"/>
+
+  <!-- Graphes -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 </head>
 <body class="bg-gray-50">
@@ -35,14 +41,25 @@
                 d="M9 3.75A1.75 1.75 0 0110.75 2h2.5A1.75 1.75 0 0115 3.75V4h4.25a.75.75 0 010 1.5h-.3l-1.2 13.36A3.25 3.25 0 0114.52 22h-5.04a3.25 3.25 0 01-3.23-3.14L5.05 5.5h-.3a.75.75 0 010-1.5H9v-.75zm1.75-.25a.25.25 0 00-.25.25V4h4v-.25a.25.25 0 00-.25-.25h-2.5zM6.57 5.5l1.17 13.1a1.75 1.75 0 001.74 1.65h5.04a1.75 1.75 0 001.74-1.65L17.43 5.5H6.57z"
                 clip-rule="evenodd" />
         </svg>
-        <h1 class="nav-title">Système de Gestion Intelligente des Déchets</h1>
-        <h1 class="nav-title2">(SmartWaste)</h1>
+        <h1 class="nav-title">Système de Gestion Intelligente des Déchets (SmartWaste)</h1>
       </div>
 
       <div class="nav-buttons">
-        <button id="viewCollector" class="btn-collector-view">Services Ramassage</button>
-        <button id="viewUser" class="btn-user-view">Mon Foyer</button>
-        <button id="viewAdmin" class="btn-admin-view">Administration</button>
+        <button id="viewCollector" class="btn-collector-view nav-btn">
+    <i class="fas fa-truck"></i>
+    Services Ramassage
+    </button>
+
+    <button id="viewUser" class="btn-user-view nav-btn">
+        <i class="fas fa-home"></i>
+        Mon Foyer
+    </button>
+
+    <button id="viewAdmin" class="btn-admin-view nav-btn">
+        <i class="fas fa-user-shield"></i>
+        Administration
+    </button>
+
         <button id="logoutBtn" class="btn-logout">
          <i class="fas fa-sign-out-alt"></i>
              <span>Déconnexion</span>
@@ -59,15 +76,15 @@
 
       <div class="stats-grid">
         <div class="stat-card">
-          <h3 class="stat-label">Poubelles Pleines</h3>
+          <h3 class="stat-label">Poubelles Urgentes</h3>
           <p id="fullBins" class="stat-value stat-value-full">0</p>
         </div>
         <div class="stat-card">
           <h3 class="stat-label">Taux Moyen</h3>
-          <p id="averageFill" class="stat-value stat-value-average">0%</p>
+          <p id="averageFill" class="stat-value stat-value-average">70%</p>
         </div>
         <div class="stat-card">
-          <h3 class="stat-label">Collectes Urgentes</h3>
+          <h3 class="stat-label">Poubelles Pleines</h3>
           <p id="urgentCollections" class="stat-value stat-value-urgent">0</p>
         </div>
         <div class="stat-card">
@@ -87,12 +104,32 @@
           <div id="urgentList" class="urgent-list"></div>
         </div>
       </div>
+      <div id="analyticsPanel" class="hidden mt-6 p-4 bg-white rounded-lg shadow">
+    <h2 class="text-xl font-bold mb-4">Analyse du Service</h2>
 
-      <div class="action-section">
-        <button id="exportReport" class="btn-export">
-          <i class="fa-solid fa-file-export mr-2"></i> Générer Rapport
-        </button>
+    <!-- Filtres -->
+    <div class="flex space-x-4 mb-4">
+        <select id="filterPeriod" class="px-4 py-2 border rounded">
+            <option value="7">7 jours</option>
+            <option value="30">30 jours</option>
+            <option value="90">90 jours</option>
+        </select>
+
+        <select id="filterType" class="px-4 py-2 border rounded">
+            <option value="all">Toutes les données</option>
+            <option value="full">Poubelles pleines</option>
+            <option value="urgent">Collectes urgentes</option>
+        </select>
+    </div>
+
+        <!-- Graphique -->
+        <canvas id="serviceChart" style="height: 100px;"></canvas>
       </div>
+
+    <button id="viewAnalytics" class="btn-custom-analyse">
+    <i class="bi bi-graph-up"></i> Analyse
+</button>
+
     </section>
 
     <!-- Vue Foyer -->
@@ -101,7 +138,7 @@
 
       <div class="user-grid">
         <div class="user-bin-card">
-          <div id="userBinLevel" class="bin-level-display">45%</div>
+          <div id="userBinLevel" class="bin-level-display">70%</div>
           <div class="progress-bar-container">
             <div id="userBinBar" class="progress-bar-fill" style="width:45%"></div>
           </div>
@@ -113,11 +150,11 @@
           <h3 class="content-title">Historique des Collectes</h3>
           <div class="history-list">
             <div class="history-item">
-              <span>26 Nov 2024</span>
+              <span>26 Nov 2025</span>
               <span class="status-collected">✓ Collectée</span>
             </div>
             <div class="history-item">
-              <span>23 Nov 2024</span>
+              <span>03 Dec 2025</span>
               <span class="status-collected">✓ Collectée</span>
             </div>
           </div>
